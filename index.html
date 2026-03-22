@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hitster · Spotify Edition</title>
+<title>Grooveline</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0d0d0d;--surface:#161616;--surface2:#1e1e1e;--border:#2c2c2c;--green:#1DB954;--green-glow:#1DB95422;--green-dim:#0f6b2f;--text:#efefef;--muted:#5a5a5a;--muted2:#888;--accent:#f5a623;--accent2:#e05555;--token:#7b61ff;--r:10px;}
@@ -83,7 +83,7 @@ input:focus,textarea:focus{border-color:var(--green);}
 #np-progress-track{width:100%;height:4px;background:var(--border);border-radius:999px;cursor:pointer;}
 #np-progress-fill{height:100%;background:var(--green);border-radius:999px;width:0%;transition:width .5s linear;}
 .time-row{display:flex;justify-content:space-between;font-size:.6rem;color:var(--muted);}
-.year-bubble{width:82px;height:82px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:'Syne',sans-serif;font-weight:900;font-size:1.45rem;transition:all .35s;}
+.year-bubble{width:82px;height:82px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:'Syne',sans-serif;font-weight:900;font-size:1.1rem;transition:all .35s;overflow:hidden;}
 .year-bubble.hidden{background:var(--surface2);color:transparent;border-color:var(--muted);cursor:pointer;position:relative;}
 .year-bubble.hidden::after{content:'?';position:absolute;color:var(--muted2);font-size:2.2rem;}
 .year-bubble.revealed{background:var(--green);color:#000;border-color:var(--green);animation:pop .35s cubic-bezier(.175,.885,.32,1.275);}
@@ -140,8 +140,8 @@ input:focus,textarea:focus{border-color:var(--green);}
 </head>
 <body>
 <header>
-  <h1>HIT<span class="g">ST</span><span class="a">ER</span></h1>
-  <p class="subtitle">Spotify Edition · OAuth · Fichas</p>
+  <h1>GROOVE<span class="g">LI</span><span class="a">NE</span></h1>
+  <p class="subtitle">Spotify Edition · Linha do Tempo Musical</p>
 </header>
 
 <!-- LOGIN -->
@@ -709,8 +709,7 @@ function checkPosition(){
 
   // replace phase 3 buttons with auto result
   document.getElementById('act-reveal').innerHTML = correct
-    ? `<div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--green);font-size:1rem;text-align:center;padding:8px 0;">🎉 Posição correta! +1 carta.</div><button class="btn btn-green full" onclick="markCorrect()">Continuar →</button>`
-    : `<div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--accent2);font-size:1rem;text-align:center;padding:8px 0;">❌ Posição errada. A música é de ${currentSong.year}.</div><button class="btn btn-outline full" onclick="markWrong()">Continuar →</button>`;
+    ? `<div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--green);font-size:1rem;text-align:center;padding:8px 0;">🎉 Posição correta! +1 carta.</div><button class="btn btn-green full" onclick="markCorrect()">Continuar →</button>`    : `<div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--accent2);font-size:1rem;text-align:center;padding:8px 0;">❌ Posição errada. A música é de ${currentSong.year}.</div><button class="btn btn-outline full" onclick="markWrong()">Continuar →</button>`;
 }
 
 function markCorrect(){
@@ -720,7 +719,11 @@ function markCorrect(){
   scores[player]++;
   revealed.push({...currentSong});
   renderTimeline();
-  if(scores[player]>=winScore){showWinner();return;}
+  if(scores[player]>=winScore){
+    toast(`🏁 ${player} fechou a linha do tempo! Calculando pontuação final…`);
+    setTimeout(()=>showWinner(),1800);
+    return;
+  }
   advance();
 }
 function markWrong(){advance();}
@@ -803,32 +806,15 @@ function renderTimeline(){
 function showWinner(){
   clearInterval(progressInterval);clearTimeout(stopTimer);try{pausePlayback();}catch(e){}
   showScreen('winner');
-  const byCards=[...players].sort((a,b)=>scores[b]-scores[a]);
-  const byTokens=[...players].sort((a,b)=>(tokens[b]||0)-(tokens[a]||0));
-  document.getElementById('winner-name').textContent=byCards[0];
+  const total=p=>(scores[p]||0)+(tokens[p]||0);
+  const byTotal=[...players].sort((a,b)=>total(b)-total(a));
+  document.getElementById('winner-name').textContent=byTotal[0];
   const fs=document.getElementById('final-scores');fs.innerHTML='';
 
-  // cards ranking
-  const cardTitle=document.createElement('div');
-  cardTitle.style.cssText='font-family:Syne,sans-serif;font-weight:700;font-size:.67rem;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin:8px 0 6px';
-  cardTitle.textContent='🃏 Ranking — Linha do Tempo';
-  fs.appendChild(cardTitle);
   const medals=['🥇','🥈','🥉'];
-  byCards.forEach((p,i)=>{
+  byTotal.forEach((p,i)=>{
     const row=document.createElement('div');row.className='fs-row'+(i===0?' gold':'');
-    row.innerHTML=`<span class="fs-name">${medals[i]||'·'} ${p}</span><span class="fs-pts">${scores[p]} cartas</span>`;
-    fs.appendChild(row);
-  });
-
-  // token ranking
-  const tokTitle=document.createElement('div');
-  tokTitle.style.cssText='font-family:Syne,sans-serif;font-weight:700;font-size:.67rem;letter-spacing:2px;text-transform:uppercase;color:var(--token);margin:16px 0 6px';
-  tokTitle.textContent='🪙 Ranking — Fichas (reconhecimento musical)';
-  fs.appendChild(tokTitle);
-  byTokens.forEach((p,i)=>{
-    const row=document.createElement('div');row.className='fs-row'+(i===0?' gold':'');
-    row.style.borderColor=i===0?'var(--token)':'';
-    row.innerHTML=`<span class="fs-name">${medals[i]||'·'} ${p}</span><span class="fs-pts" style="color:var(--token)">${tokens[p]||0} fichas</span>`;
+    row.innerHTML=`<span class="fs-name">${medals[i]||'·'} ${p}</span><span class="fs-pts">${scores[p]} cartas + 🪙${tokens[p]||0} fichas = <strong>${total(p)} pts</strong></span>`;
     fs.appendChild(row);
   });
 }
