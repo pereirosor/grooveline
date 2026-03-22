@@ -49,7 +49,7 @@ input:focus,textarea:focus{border-color:var(--green);}
 .anchor-eyebrow{font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);margin-bottom:12px;}
 .anchor-song{font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;line-height:1.2;margin-bottom:4px;}
 .anchor-artist{color:var(--green);font-size:.85rem;margin-bottom:14px;}
-.anchor-year{display:inline-flex;align-items:center;justify-content:center;background:var(--green);color:#000;font-family:'Syne',sans-serif;font-weight:900;font-size:1.4rem;width:70px;height:70px;border-radius:50%;}
+.anchor-year{display:inline-flex;align-items:center;justify-content:center;background:var(--green);color:#000;font-family:'Space Mono',monospace;font-weight:700;font-size:.95rem;width:90px;height:90px;border-radius:50%;overflow:hidden;}
 #scoreboard{display:flex;gap:8px;flex-wrap:wrap;}
 .p-chip{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:5px 12px 5px 6px;font-size:.75rem;transition:border-color .2s,box-shadow .2s;}
 .p-chip.active{border-color:var(--green);box-shadow:0 0 0 1px var(--green);}
@@ -83,7 +83,7 @@ input:focus,textarea:focus{border-color:var(--green);}
 #np-progress-track{width:100%;height:4px;background:var(--border);border-radius:999px;cursor:pointer;}
 #np-progress-fill{height:100%;background:var(--green);border-radius:999px;width:0%;transition:width .5s linear;}
 .time-row{display:flex;justify-content:space-between;font-size:.6rem;color:var(--muted);}
-.year-bubble{width:82px;height:82px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:'Syne',sans-serif;font-weight:900;font-size:1.1rem;transition:all .35s;overflow:hidden;}
+.year-bubble{width:90px;height:90px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:'Space Mono',monospace;font-weight:700;font-size:.95rem;transition:all .35s;overflow:hidden;}
 .year-bubble.hidden{background:var(--surface2);color:transparent;border-color:var(--muted);cursor:pointer;position:relative;}
 .year-bubble.hidden::after{content:'?';position:absolute;color:var(--muted2);font-size:2.2rem;}
 .year-bubble.revealed{background:var(--green);color:#000;border-color:var(--green);animation:pop .35s cubic-bezier(.175,.885,.32,1.275);}
