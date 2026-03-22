@@ -488,9 +488,7 @@ async function nextTurn(){
   document.getElementById('song-revealed').style.display='none';
   document.getElementById('song-title').textContent=currentSong.title;
   document.getElementById('song-artist').textContent=currentSong.artist;
-  const yb=document.getElementById('year-bubble');yb.textContent='';yb.className='year-bubble hidden';yb.onclick=revealYear;
-
-  document.getElementById('btn-playpause').disabled=true;
+  const yb=document.getElementById('year-bubble');yb.textContent='';yb.className='year-bubble hidden';yb.onclick=null;  document.getElementById('btn-playpause').disabled=true;
   document.getElementById('btn-playpause').textContent='⏳';
   document.getElementById('np-status').textContent='buscando…';
   document.getElementById('np-progress-fill').style.width='0%';
