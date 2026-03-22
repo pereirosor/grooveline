@@ -678,6 +678,8 @@ function markCorrect(){
   advance();
 }
 function markWrong(){advance();}
+
+async function togglePlay(){
   const btn=document.getElementById('btn-playpause');
   try{
     if(btn.textContent==='⏸'){await pausePlayback();btn.textContent='▶';document.getElementById('np-status').textContent='pausado';clearInterval(progressInterval);clearTimeout(stopTimer);}
