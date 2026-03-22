@@ -325,13 +325,15 @@ let seekStartMs=0,guessedToken=false;
   const p=new URLSearchParams(window.location.search);
   const code=p.get('code'),error=p.get('error');
   if(error){showLoginErr('Acesso negado pelo Spotify.');return;}
+  // ?reset limpa sessão travada
+  if(p.has('reset')){clearToken();window.history.replaceState({},'',window.location.pathname);}
   if(code){
     window.history.replaceState({},'',window.location.pathname);
     try{await exchangeCode(code);await afterLogin();}catch(e){showLoginErr(e.message);}
     return;
   }
   const t=loadToken();
-  if(t){accessToken=t;try{await afterLogin();}catch(e){clearToken();}}
+  if(t){accessToken=t;try{await afterLogin();}catch(e){clearToken();showScreen('login');}}
 })();
 
 // ── PKCE ──
